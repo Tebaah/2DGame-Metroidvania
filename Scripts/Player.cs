@@ -1,144 +1,137 @@
 using Godot;
 using System;
+// using System.Numerics;
 
 public partial class Player : CharacterBody2D
 {
     // variables de movimeinto (fisica)
     [Export] public float speed;
     private const float JumpForce = 300;
-    private const float DashForce = 2.5f;
+    private const float DashForce = 25f;
 
     // variable de fisica
     private float _gravity = ProjectSettings.GetSetting("physics/2d/default_gravity").AsSingle();
 
     //  variables de estado
-    private bool _dashing = false;
     private bool _canDash = true;
-    private bool _isJumping = false;
 
-    //  variables de animacion
-    private AnimatedSprite2D _animationController;
-    private AnimationPlayer _animationWeapon;
+    // variable global
+    private Global _global;
 
+    // variable de armas y ataque
+    private WeaponsSelection _weapons;
+    private Sword _sword;
+
+    // metodos
     public override void _Ready()
     {
-        _animationController = GetNode<AnimatedSprite2D>("AnimatedSprite2D");
-        _animationWeapon = GetNode<AnimationPlayer>("AnimationPlayer");
+        _global = (Global)GetNode("/root/Global");
+        _weapons = GetNode<WeaponsSelection>("Weapons");
+        _sword = new Sword();
+
     }
 
     public override void _Process(double delta)
     {
-        Dash();
-        Animation();
-        Jump();
-        Attack();
+        ChangeWeapons();
+        Dead();
     }
 
     public override void _PhysicsProcess(double delta)
     {
-        Movement(delta);
-
-        // LookAt(GetGlobalMousePosition());
-    }
-
-    public void Movement(double delta)
-    {
         Vector2 velocity = Velocity;
 
-        if(!IsOnFloor())
-        {
-            velocity.Y += _gravity * (float)delta;
-        }
-
         float directionHorizontal = Input.GetAxis("left", "right");
-        if(directionHorizontal != 0)
-        {
-            if(_dashing == true)
-            {
-                velocity.X = directionHorizontal * speed * DashForce;
-            }
-            else
-            {
-                velocity.X = directionHorizontal * speed;
-            }
-        }
-        else
-        {
-            velocity.X = 0;
-        }
 
-        if(_isJumping == true && IsOnFloor())
-        {
-            velocity.Y = -JumpForce;
-            _isJumping = false;
-        }
+        velocity = Gravity(delta, velocity);
+
+        // comportamiento del jugador fisicas
+        Idle();
+        velocity = Move(velocity, directionHorizontal);
+        velocity = Jump(velocity);
+        velocity = Dash(velocity, directionHorizontal);
 
         Velocity = velocity;
         MoveAndSlide();
 
+        // comportamiento del jugador otros TODO ver si es necesario desde aca 
+        Attack();
     }
-    public async void Dash()
+
+    private Vector2 Gravity(double delta, Vector2 velocity)
+    {
+        if (!IsOnFloor())
+        {
+            velocity.Y += _gravity * (float)delta;
+        }
+
+        return velocity;
+    }
+
+    public void Idle()
+    {
+
+    }
+
+    private Vector2 Move(Vector2 velocity, float direction)
+    {
+        // float directionHorizontal = Input.GetAxis("left", "right");
+        velocity.X = direction * speed;
+
+        return velocity;
+    }
+
+    private Vector2 Jump(Vector2 velocity)
+    {
+        if(Input.IsActionJustPressed("jump") && IsOnFloor())
+        {
+            velocity.Y = -JumpForce;
+        }
+
+        return velocity;
+    }
+
+    private Vector2 Dash(Vector2 velocity, float direction)
     {
         if(Input.IsActionJustPressed("dash") && _canDash == true)
         {
-            _dashing = true;
-            _canDash = false;
-
-            await ToSignal(GetTree().CreateTimer(0.5f), "timeout");
-            _dashing = false;
-
-            await ToSignal(GetTree().CreateTimer(2), "timeout");
-            _canDash = true;
+            velocity.X = direction * speed * DashForce;
+            CanDash();
         }
-    }
 
-    public void Jump()
-    {
-        if(Input.IsActionJustPressed("jump"))
-        {
-            _isJumping = true;
-        }
+        return velocity;
     }
 
     public void Attack()
     {
         if(Input.IsActionJustPressed("attack"))
         {
-            if(GetGlobalMousePosition().X < Position.X)
-            {
-                _animationWeapon.Play("attackleft");
-            }  
-            else
-            {
-                _animationWeapon.Play("attack");
-            }
+            // _sword.Attack();
         }
     }
-    public void Animation()
+
+    private async void CanDash()
     {
-        if(_dashing == true)
+        _canDash = false;
+        await ToSignal(GetTree().CreateTimer(1), "timeout");
+        _canDash = true;
+    }
+
+    private void Dead()
+    {
+        if(_global.lifePlayer <= 0)
         {
-            _animationController.Play("dash");
-            if(GetGlobalMousePosition().X < Position.X)
-            {   
-                _animationController.FlipH = true;
-            }
-            else
-            {
-                _animationController.FlipH = false;
-            }
-        }
-        else
-        {
-            _animationController.Play("idle");
-            if(GetGlobalMousePosition().X < Position.X)
-            {   
-                _animationController.FlipH = true;
-            }
-            else
-            {
-                _animationController.FlipH = false;
-            }
+            GD.Print("Player dead");
         }
     }
+
+    private void ChangeWeapons()
+    {
+        if(Input.IsActionJustPressed("changeweapons"))
+        {
+            _weapons.ChangeWeapons();
+        }
+        
+    }
+
 }

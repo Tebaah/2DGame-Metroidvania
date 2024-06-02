@@ -1,0 +1,16 @@
+[gd_scene load_steps=3 format=3 uid="uid://bsnai5j1n2efs"]
+
+[ext_resource type="Texture2D" uid="uid://ba1agqyhl5maj" path="res://Assets/Characters/Player/longsword.png" id="1_eduxa"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_4257i"]
+size = Vector2(16, 49)
+
+[node name="LongSword" type="Area2D"]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2(0, -7.5)
+shape = SubResource("RectangleShape2D_4257i")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+texture_filter = 1
+texture = ExtResource("1_eduxa")
