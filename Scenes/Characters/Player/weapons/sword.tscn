@@ -1,0 +1,16 @@
+[gd_scene load_steps=3 format=3 uid="uid://b4yq72b0r0gr4"]
+
+[ext_resource type="Texture2D" uid="uid://bvrq6357e1djc" path="res://Assets/Characters/Player/Weapons/sword.png" id="1_87pra"]
+
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_5446h"]
+radius = 5.0
+
+[node name="Sword" type="Area2D"]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2(10, 0)
+shape = SubResource("CapsuleShape2D_5446h")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+texture_filter = 1
+texture = ExtResource("1_87pra")
