@@ -1,10 +1,12 @@
-[gd_scene load_steps=14 format=3 uid="uid://dx27uon8sb3ks"]
+[gd_scene load_steps=16 format=3 uid="uid://dx27uon8sb3ks"]
 
 [ext_resource type="Script" path="res://Scripts/Player.cs" id="1_rvqmb"]
 [ext_resource type="Texture2D" uid="uid://boe3ymbigwlhl" path="res://Assets/Characters/Player/Player.png" id="2_8nky0"]
-[ext_resource type="Script" path="res://Scripts/WeaponsSelection.cs" id="3_k0uek"]
-[ext_resource type="PackedScene" uid="uid://bsnai5j1n2efs" path="res://Scenes/Characters/Player/long_sword.tscn" id="4_xo4iy"]
-[ext_resource type="PackedScene" uid="uid://co40txnwun4y1" path="res://Scenes/Characters/Player/short_sword.tscn" id="5_02j1a"]
+[ext_resource type="Script" path="res://Scripts/Weapons.cs" id="4_mux0g"]
+[ext_resource type="PackedScene" uid="uid://ce5ngkgkx3kxq" path="res://Scenes/Characters/Player/weapons/bullet.tscn" id="5_3opta"]
+[ext_resource type="PackedScene" uid="uid://b4yq72b0r0gr4" path="res://Scenes/Characters/Player/weapons/sword.tscn" id="5_kwbb2"]
+[ext_resource type="Script" path="res://Scripts/Crosshair.cs" id="6_le1j7"]
+[ext_resource type="Texture2D" uid="uid://cinsij2k8f7dr" path="res://Assets/Characters/Player/Mira.png" id="7_w7kty"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_usp12"]
 radius = 16.0
@@ -82,8 +84,17 @@ libraries = {
 }
 speed_scale = 2.0
 
-[node name="Weapons" type="Node2D" parent="."]
-script = ExtResource("3_k0uek")
-weapons = Array[PackedScene]([ExtResource("5_02j1a"), ExtResource("4_xo4iy")])
+[node name="Crosshair" type="Node2D" parent="."]
+script = ExtResource("6_le1j7")
 
-[node name="Marker2D" type="Marker2D" parent="Weapons"]
+[node name="Sprite2D" type="Sprite2D" parent="Crosshair"]
+texture_filter = 1
+position = Vector2(75, 0)
+texture = ExtResource("7_w7kty")
+
+[node name="Weapons" type="Node2D" parent="Crosshair"]
+script = ExtResource("4_mux0g")
+weapons = Array[PackedScene]([ExtResource("5_kwbb2"), ExtResource("5_3opta")])
+
+[node name="Marker2D" type="Marker2D" parent="Crosshair/Weapons"]
+position = Vector2(25, 0)

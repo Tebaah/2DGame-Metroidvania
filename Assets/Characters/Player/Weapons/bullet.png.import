@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://ba1agqyhl5maj"
-path="res://.godot/imported/longsword.png-7325c5a1e10204e457cfc577f4c844fc.ctex"
+uid="uid://cywsuxt2cr1gv"
+path="res://.godot/imported/bullet.png-a520219386a72a84dc7b20befe8e23f5.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://Assets/Characters/Player/longsword.png"
-dest_files=["res://.godot/imported/longsword.png-7325c5a1e10204e457cfc577f4c844fc.ctex"]
+source_file="res://Assets/Characters/Player/Weapons/bullet.png"
+dest_files=["res://.godot/imported/bullet.png-a520219386a72a84dc7b20befe8e23f5.ctex"]
 
 [params]
 

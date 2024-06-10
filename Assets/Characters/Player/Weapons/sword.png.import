@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://cfbcsqbycdi5f"
-path="res://.godot/imported/shortsword.png-d7411f4cb6a41ca56fbda70b094b4b06.ctex"
+uid="uid://bvrq6357e1djc"
+path="res://.godot/imported/sword.png-5a503f9d67da837d09c0a2f20a84eb47.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://Assets/Characters/Player/shortsword.png"
-dest_files=["res://.godot/imported/shortsword.png-d7411f4cb6a41ca56fbda70b094b4b06.ctex"]
+source_file="res://Assets/Characters/Player/Weapons/sword.png"
+dest_files=["res://.godot/imported/sword.png-5a503f9d67da837d09c0a2f20a84eb47.ctex"]
 
 [params]
 
